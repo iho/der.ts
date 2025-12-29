@@ -10,6 +10,7 @@ import { ASN1BitString } from "../src/types/bit_string";
 import { ASN1ObjectIdentifier } from "../src/types/object_identifier";
 import { ASN1Real } from "../src/types/real";
 import { ContentType } from "../src/collection";
+import { toHex, toBase64, fromHex, fromBase64 } from "../src/utils";
 
 describe("ASN.1 DER Parser", () => {
     test("test_der_sequence_of_success", () => {
@@ -209,5 +210,20 @@ describe("ASN.1 DER Parser", () => {
                 expect(decoded).toBe(val);
             }
         }
+    });
+
+    test("test_binary_utilities", () => {
+        const bytes = new Uint8Array([0xDE, 0xAD, 0xBE, 0xEF]);
+        const hex = "deadbeef";
+        const b64 = "3q2+7w==";
+
+        expect(toHex(bytes)).toBe(hex);
+        expect(toBase64(bytes)).toBe(b64);
+        expect(fromHex(hex)).toEqual(bytes);
+        expect(fromBase64(b64)).toEqual(bytes);
+
+        const octetString = new ASN1OctetString(bytes);
+        expect(octetString.toHex()).toBe(hex);
+        expect(octetString.toBase64()).toBe(b64);
     });
 });

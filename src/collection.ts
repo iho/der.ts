@@ -1,5 +1,6 @@
 import { ParserNode } from "./parser";
 import { ASN1Identifier } from "./types/identifier";
+import { toHex, toBase64 } from "./utils";
 
 export enum ContentType {
     Constructed,
@@ -16,6 +17,14 @@ export class ASN1Node {
         public content: Content,
         public encodedBytes: Uint8Array
     ) { }
+
+    toHex(): string {
+        return toHex(this.encodedBytes);
+    }
+
+    toBase64(): string {
+        return toBase64(this.encodedBytes);
+    }
 
     isConstructed(): boolean {
         return this.content.type === ContentType.Constructed;

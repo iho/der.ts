@@ -2,6 +2,7 @@ import { ASN1Node, ContentType } from "../collection";
 import type { DERImplicitlyTaggable, Serializer } from "../der";
 import { ASN1Error, ErrorCode } from "../errors";
 import { ASN1Identifier } from "./identifier";
+import { toHex, toBase64 } from "../utils";
 
 export class ASN1OctetString implements DERImplicitlyTaggable<ASN1OctetString> {
     constructor(public value: Uint8Array) { }
@@ -48,5 +49,13 @@ export class ASN1OctetString implements DERImplicitlyTaggable<ASN1OctetString> {
         serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
             for (const b of this.value) buf.push(b);
         });
+    }
+
+    toHex(): string {
+        return toHex(this.value);
+    }
+
+    toBase64(): string {
+        return toBase64(this.value);
     }
 }
