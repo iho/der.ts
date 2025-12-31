@@ -47,7 +47,11 @@ export class ASN1UTF8String implements DERImplicitlyTaggable<ASN1UTF8String> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             const encoder = new TextEncoder();
             const bytes = encoder.encode(this.value);
             for (const b of bytes) buf.push(b);

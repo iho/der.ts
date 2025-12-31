@@ -60,7 +60,11 @@ export class ASN1Boolean implements DERImplicitlyTaggable<ASN1Boolean> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             buf.push(this.value ? 0xff : 0x00);
         });
     }
