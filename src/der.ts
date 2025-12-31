@@ -136,6 +136,31 @@ export class Serializer {
         this.appendConstructedNode(ASN1Identifier.SEQUENCE, writer);
     }
 
+    writeSet(writer: (serializer: Serializer) => void): void {
+        this.appendConstructedNode(ASN1Identifier.SET, writer);
+    }
+
+    /**
+     * Re-serialize an existing ASN1Node (useful for round-trip testing).
+     * Preserves the exact structure of the parsed node.
+     */
+    writeNode(node: ASN1Node): void {
+        if (node.content.type === ContentType.Primitive) {
+            const data = node.content.value;
+            this.appendPrimitiveNode(node.identifier, (buf) => {
+                for (const b of data) buf.push(b);
+            });
+        } else {
+            this.appendConstructedNode(node.identifier, (nested) => {
+                // ASN1NodeCollection is iterable via Symbol.iterator
+                const collection = node.content.value;
+                for (const child of collection) {
+                    nested.writeNode(child);
+                }
+            });
+        }
+    }
+
     serialize(node: DERSerializable): void {
         node.serialize(this);
     }
