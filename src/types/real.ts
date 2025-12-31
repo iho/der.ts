@@ -101,7 +101,11 @@ export class ASN1Real implements DERImplicitlyTaggable<ASN1Real> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             if (this.value === 0) return;
 
             if (!isFinite(this.value)) {

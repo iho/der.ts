@@ -71,7 +71,11 @@ export class ASN1Integer implements DERImplicitlyTaggable<ASN1Integer> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             const bytes = ASN1Integer.toSignedBytesBE(this.value);
             for (const b of bytes) buf.push(b);
         });

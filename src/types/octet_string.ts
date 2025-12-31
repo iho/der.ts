@@ -46,7 +46,11 @@ export class ASN1OctetString implements DERImplicitlyTaggable<ASN1OctetString> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             for (const b of this.value) buf.push(b);
         });
     }

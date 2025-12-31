@@ -76,7 +76,11 @@ export class ASN1BitString implements DERImplicitlyTaggable<ASN1BitString> {
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             buf.push(this.paddingBits);
             for (const b of this.bytes) buf.push(b);
         });

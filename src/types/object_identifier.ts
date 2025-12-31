@@ -106,7 +106,11 @@ export class ASN1ObjectIdentifier implements DERImplicitlyTaggable<ASN1ObjectIde
     }
 
     serialize(serializer: Serializer): void {
-        serializer.appendPrimitiveNode(this.defaultIdentifier(), (buf) => {
+        this.serializeWithIdentifier(serializer, this.defaultIdentifier());
+    }
+
+    serializeWithIdentifier(serializer: Serializer, identifier: ASN1Identifier): void {
+        serializer.appendPrimitiveNode(identifier, (buf) => {
             for (const b of this.bytes) buf.push(b);
         });
     }
