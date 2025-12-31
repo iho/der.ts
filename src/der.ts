@@ -1,7 +1,11 @@
 import { ASN1Error, ErrorCode } from "./errors";
+export { ASN1Error, ErrorCode };
 import { ASN1Node, ASN1NodeCollection, ASN1NodeCollectionIterator, ContentType } from "./collection";
+export { ASN1Node, ASN1NodeCollection, ASN1NodeCollectionIterator, ContentType };
 import { EncodingRules, ParseResult } from "./parser";
-import { ASN1Identifier } from "./types/identifier";
+export { EncodingRules, ParseResult };
+import { ASN1Identifier, TagClass } from "./types/identifier";
+export { ASN1Identifier, TagClass }
 
 export interface DERParseable<T> {
     fromDERNode(node: ASN1Node): T;
